@@ -2,10 +2,24 @@ import React from 'react';
 import './FoodCard.css';
 
 const FoodCard = ({ food, onRequestClick }) => {
-  // Determine top strip color based on category
   const getStripColor = (category) => {
     return category === 'Cooked Meal' ? 'var(--color-primary)' : 'var(--color-secondary)';
   };
+
+  let buttonText = "Request This";
+  let buttonDisabled = false;
+  let buttonClass = "btn btn-primary request-btn";
+
+  if (food.claimStatus === 'pending') {
+    buttonText = "Request Pending ⏳";
+    buttonDisabled = true;
+  } else if (food.claimStatus === 'approved') {
+    buttonText = "Claim Approved ✓";
+    buttonDisabled = true;
+    buttonClass = "btn btn-success request-btn";
+  } else if (food.claimStatus === 'rejected') {
+    buttonText = "Request Rejected — Try Again";
+  }
 
   return (
     <div className="food-card">
@@ -39,10 +53,11 @@ const FoodCard = ({ food, onRequestClick }) => {
         </div>
         
         <button 
-          className="btn btn-primary request-btn"
+          className={buttonClass}
           onClick={() => onRequestClick(food)}
+          disabled={buttonDisabled}
         >
-          Request This
+          {buttonText}
         </button>
       </div>
     </div>

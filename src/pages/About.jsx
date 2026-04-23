@@ -89,15 +89,15 @@ const About = () => {
         
         <div className="team-grid">
           <div className="team-card">
-            <div className="team-avatar">AS</div>
-            <h3>Arjun Sharma</h3>
-            <p className="team-role">Co-Founder & CEO</p>
+            <div className="team-avatar">DT</div>
+            <h3>Deepanshu Thakur</h3>
+            <p className="team-role">Co-Founder</p>
             <p className="team-bio">Former logistics expert passionate about solving supply chain inefficiencies for social good.</p>
           </div>
           <div className="team-card">
-            <div className="team-avatar">NK</div>
-            <h3>Neha Kapoor</h3>
-            <p className="team-role">Co-Founder & CTO</p>
+            <div className="team-avatar">AS</div>
+            <h3>Arighna Sadhu</h3>
+            <p className="team-role">Co-Founder</p>
             <p className="team-bio">Full-stack developer who believes technology should be used to uplift communities.</p>
           </div>
         </div>
