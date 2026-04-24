@@ -67,7 +67,7 @@
 }
 
 /* Underline animation for nav links */
-.navbar-links a::after {
+.navbar-links a:not(.btn)::after {
   content: '';
   position: absolute;
   width: 0;
@@ -78,8 +78,8 @@
   transition: width 0.3s ease;
 }
 
-.navbar-links a:hover::after,
-.navbar-links a.active::after {
+.navbar-links a:not(.btn):hover::after,
+.navbar-links a:not(.btn).active::after {
   width: 100%;
 }
 

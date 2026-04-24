@@ -1,0 +1,73 @@
+/* Dashboard.css */
+.dashboard-page {
+  padding: 120px 24px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  font-size: 2.2rem;
+  color: var(--color-secondary);
+}
+
+.dashboard-section {
+  margin-bottom: 48px;
+}
+
+.dashboard-section h2 {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  margin-bottom: 24px;
+}
+
+.dashboard-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.dashboard-card h3 {
+  margin-bottom: 12px;
+  color: var(--color-text-dark);
+}
+
+.dashboard-card p {
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-approved { background-color: rgba(45, 90, 61, 0.1); color: var(--color-secondary); }
+.status-rejected { background-color: rgba(211, 47, 47, 0.1); color: #d32f2f; }
+.status-pending { background-color: rgba(232, 168, 56, 0.1); color: var(--color-primary); }
+
+.reason-box {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: rgba(232, 168, 56, 0.05);
+  border-left: 3px solid var(--color-primary);
+  font-size: 0.9rem;
+}

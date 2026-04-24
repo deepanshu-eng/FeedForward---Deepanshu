@@ -34,7 +34,7 @@ const donationSchema = new mongoose.Schema({
   expiryTime: Date,
   pickupAddress: String,
   city: String,
-  pickupTime: String,
+  pickupTime: Date,
   contactNumber: String,
   confirmed: Boolean,
   status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },

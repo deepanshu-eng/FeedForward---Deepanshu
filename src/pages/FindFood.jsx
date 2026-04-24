@@ -42,15 +42,20 @@ const FindFood = () => {
       // 🔥 MERGE CLAIM STATUS INTO LISTINGS (this fixes refresh issue)
       const mapped = donationsData.map(d => {
         const claimStatus = map[d._id] || null;
+        const expiryTime = new Date(d.expiryTime).getTime();
+        const now = Date.now();
+        const timeLeft = expiryTime - now;
+
         return {
           id: d._id,
           name: d.foodName,
           category: d.category,
           quantity: `${d.quantity} ${d.unit}`,
           location: d.city,
-          timePosted: 'just now',
-          expiryText: new Date(d.expiryTime).toLocaleString(),
-          isUrgent: new Date(d.expiryTime) < new Date(Date.now() + 86400000),
+          pickupText: d.pickupTime ? new Date(d.pickupTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'short', timeStyle: 'short' }) : 'N/A',
+          expiryText: new Date(d.expiryTime).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }),
+          isExpired: timeLeft <= 0,
+          isUrgent: timeLeft > 0 && timeLeft <= 6 * 60 * 60 * 1000,
           claimStatus,                    // ← NEW
           isRequested: claimStatus === 'pending'
         };
@@ -167,6 +172,63 @@ const FindFood = () => {
           ))}
         </div>
       </div>
+
+      {/* --- NEW CUSTOM SECTIONS --- */}
+      <section className="safety-section">
+        <div className="section-inner">
+          <h2>Safety Guidelines</h2>
+          <p className="section-subtitle">Your health and safety are our top priority. Please follow these rules when claiming food.</p>
+          <div className="safety-grid">
+            <div className="safety-card">
+              <span className="safety-icon">👀</span>
+              <h4>Inspect First</h4>
+              <p>Always inspect the food upon pickup. Ensure it smells, looks, and feels fresh before consuming.</p>
+            </div>
+            <div className="safety-card">
+              <span className="safety-icon">🌡️</span>
+              <h4>Check Temperatures</h4>
+              <p>Ensure perishable items were stored correctly. Hot food should be hot, and cold food cold.</p>
+            </div>
+            <div className="safety-card">
+              <span className="safety-icon">⏳</span>
+              <h4>Mind the Expiry</h4>
+              <p>Consume the claimed food before the listed expiry time. When in doubt, throw it out.</p>
+            </div>
+            <div className="safety-card">
+              <span className="safety-icon">🤝</span>
+              <h4>Meet Safely</h4>
+              <p>Pick up food in public, well-lit areas or at verified centers during daylight hours.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="how-claim-section">
+        <div className="section-inner">
+          <div className="text-center">
+            <h2>How to Claim Food</h2>
+            <p className="section-subtitle">Three simple steps to rescue food and prevent waste.</p>
+          </div>
+          <div className="claim-steps-container">
+            <div className="claim-step">
+              <div className="step-number">1</div>
+              <h4>Browse & Request</h4>
+              <p>Find what you need and click "Request". The donor will be notified instantly.</p>
+            </div>
+            <div className="claim-step">
+              <div className="step-number">2</div>
+              <h4>Wait for Approval</h4>
+              <p>Once the admin approves your claim, you'll receive the pickup confirmation.</p>
+            </div>
+            <div className="claim-step">
+              <div className="step-number">3</div>
+              <h4>Pickup & Enjoy</h4>
+              <p>Head to the location at the agreed time. Enjoy your meal and help reduce waste!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* --- END CUSTOM SECTIONS --- */}
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Request Food">
         {selectedFood && (

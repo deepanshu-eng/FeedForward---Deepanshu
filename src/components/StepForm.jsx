@@ -68,7 +68,8 @@ const StepForm = () => {
         body: JSON.stringify({
           ...formData,
           quantity: Number(formData.quantity),
-          expiryTime: new Date(formData.expiryTime)
+          expiryTime: new Date(formData.expiryTime),
+          pickupTime: new Date(formData.pickupTime)
         })
       });
 
@@ -149,10 +150,9 @@ const StepForm = () => {
     <input type="text" name="city" value={formData.city} onChange={handleChange} required />
   </div>
 
-  {/* ✅ NEW FIELD */}
   <div className="form-group">
     <label>Pickup Time</label>
-    <input type="text" name="pickupTime" placeholder="e.g. 5 PM - 7 PM" value={formData.pickupTime} onChange={handleChange} required />
+    <input type="datetime-local" name="pickupTime" value={formData.pickupTime} onChange={handleChange} required />
   </div>
 
   <div className="form-group">

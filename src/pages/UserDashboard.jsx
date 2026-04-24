@@ -1,64 +1,92 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import './Dashboard.css';
 
 const UserDashboard = () => {
-  const { user, token, logout } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [myDonations, setMyDonations] = useState([]);
   const [myClaims, setMyClaims] = useState([]);
 
   useEffect(() => {
-    if (!user) navigate('/login');
+    if (!user) {
+      navigate('/login');
+      return;
+    }
     fetchMyDonations();
     fetchMyClaims();
-  }, [user, token]);
+  }, [user, token, navigate]);
 
   const fetchMyDonations = async () => {
-    const res = await fetch('http://localhost:5000/api/donations/my', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    setMyDonations(data);
+    try {
+      const res = await fetch('http://localhost:5000/api/donations/my', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if(Array.isArray(data)) setMyDonations(data);
+    } catch(e) {}
   };
 
   const fetchMyClaims = async () => {
-    const res = await fetch('http://localhost:5000/api/claims/my', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const data = await res.json();
-    setMyClaims(data);
+    try {
+      const res = await fetch('http://localhost:5000/api/claims/my', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if(Array.isArray(data)) setMyClaims(data);
+    } catch(e) {}
+  };
+
+  const getStatusClass = (status) => {
+    if(status === 'approved') return 'status-approved';
+    if(status === 'rejected') return 'status-rejected';
+    return 'status-pending';
   };
 
   return (
-    <div className="page-container">
-      <h1>Welcome, {user?.name} 👋</h1>
-      <button onClick={logout} className="btn btn-outline" style={{ float: 'right' }}>Logout</button>
-
-      <h2 style={{ marginTop: '40px' }}>Your Donation Requests</h2>
-      <div className="listings-grid">
-        {myDonations.map(d => (
-          <div key={d._id} style={{ border: '1px solid #ddd', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
-            <strong>{d.foodName}</strong> — {d.quantity} {d.unit}<br />
-            Status: <span style={{ color: d.status === 'approved' ? 'green' : d.status === 'rejected' ? 'red' : 'orange' }}>
-              {d.status.toUpperCase()}
-            </span>
-            {d.adminReason && <p><strong>Reason:</strong> {d.adminReason}</p>}
-          </div>
-        ))}
+    <div className="dashboard-page">
+      <div className="dashboard-header">
+        <h1>Welcome, {user?.name} 👋</h1>
       </div>
 
-      <h2 style={{ marginTop: '40px' }}>Your Claim Requests</h2>
-      <div className="listings-grid">
-        {myClaims.map(c => (
-          <div key={c._id} style={{ border: '1px solid #ddd', padding: '16px', borderRadius: '8px', marginBottom: '16px' }}>
-            <strong>{c.donationId?.foodName || 'Food Item'}</strong><br />
-            Status: <span style={{ color: c.status === 'approved' ? 'green' : c.status === 'rejected' ? 'red' : 'orange' }}>
-              {c.status.toUpperCase()}
-            </span>
-            {c.adminReason && <p><strong>Reason:</strong> {c.adminReason}</p>}
+      <div className="dashboard-section">
+        <h2>Your Donation Requests</h2>
+        {myDonations.length === 0 ? (
+          <p>You haven't made any donations yet.</p>
+        ) : (
+          <div className="listings-grid">
+            {myDonations.map(d => (
+              <div key={d._id} className="dashboard-card">
+                <h3>{d.foodName}</h3>
+                <p>Quantity: {d.quantity} {d.unit}</p>
+                <div style={{ marginTop: '12px' }}>
+                  Status: <span className={`status-badge ${getStatusClass(d.status)}`}>{d.status}</span>
+                </div>
+                {d.adminReason && <div className="reason-box"><strong>Note from Admin:</strong> {d.adminReason}</div>}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
+      </div>
+
+      <div className="dashboard-section">
+        <h2>Your Claim Requests</h2>
+        {myClaims.length === 0 ? (
+          <p>You haven't requested any food yet.</p>
+        ) : (
+          <div className="listings-grid">
+            {myClaims.map(c => (
+              <div key={c._id} className="dashboard-card">
+                <h3>{c.donationId?.foodName || 'Unknown Item'}</h3>
+                <div style={{ marginTop: '12px' }}>
+                  Status: <span className={`status-badge ${getStatusClass(c.status)}`}>{c.status}</span>
+                </div>
+                {c.adminReason && <div className="reason-box"><strong>Note from Admin:</strong> {c.adminReason}</div>}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

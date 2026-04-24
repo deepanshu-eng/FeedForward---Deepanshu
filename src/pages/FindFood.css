@@ -151,6 +151,117 @@
   width: 100%;
 }
 
+/* Custom Sections (Safety & How to Claim) */
+.safety-section, .how-claim-section {
+  padding: 80px 20px;
+  background-color: var(--color-surface);
+}
+
+.how-claim-section {
+  background-color: var(--color-background);
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-inner h2 {
+  font-size: 2.2rem;
+  color: var(--color-secondary);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.section-subtitle {
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 1.1rem;
+}
+
+.safety-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.safety-card {
+  background: white;
+  padding: 32px 24px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 1px solid var(--color-border);
+}
+
+.safety-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.safety-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.safety-card h4 {
+  color: var(--color-primary);
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.safety-card p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.claim-steps-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.claim-step {
+  flex: 1;
+  text-align: center;
+  padding: 32px;
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 20px;
+}
+
+.claim-step h4 {
+  color: var(--color-secondary);
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.claim-step p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 @media (max-width: 1024px) {
   .listings-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -168,5 +279,9 @@
   
   .search-btn {
     width: 100%;
+  }
+  
+  .claim-steps-container {
+    flex-direction: column;
   }
 }
