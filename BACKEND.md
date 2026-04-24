@@ -81,7 +81,7 @@ cd FeedForward
    ```
 
    You will see a message confirming the admin account:
-   - **Email:** `admin@foodshare.com`
+   - **Email:** `admin@feedforward.com`
    - **Password:** `admin123`
 
 ---
@@ -111,7 +111,7 @@ The frontend will open automatically at `http://localhost:3000`.
 4. Check **Dashboard** to see status of your donations and claims
 
 ### Admin Flow
-1. Login with `admin@foodshare.com` / `admin123`
+1. Login with `admin@feedforward.com` / `admin123`
 2. Go to **Admin Dashboard**
 3. Approve or reject pending donation requests and claim requests
 

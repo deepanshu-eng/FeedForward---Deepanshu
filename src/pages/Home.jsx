@@ -6,6 +6,13 @@ import Testimonials from '../components/Testimonials';
 import { mockTestimonials } from '../data/mockData';
 import './Home.css';
 
+const headlines = [
+  "Every meal saved is a life changed.",
+  "Share your surplus, nourish a community.",
+  "Zero waste today for a hunger-free tomorrow.",
+  "Your leftover could be someone's feast."
+];
+
 const Home = () => {
   const stepsRef = useRef(null);
   const scrollRef = useRef(null);
@@ -26,13 +33,6 @@ const Home = () => {
   const [heroText, setHeroText] = useState('');
   const [quoteIndex, setQuoteIndex] = useState(0);
 
-  const headlines = [
-    "Every meal saved is a life changed.",
-    "Share your surplus, nourish a community.",
-    "Zero waste today for a hunger-free tomorrow.",
-    "Your leftover could be someone's feast."
-  ];
-
   // Rotate quotes every 15 seconds
   useEffect(() => {
     const rotateInterval = setInterval(() => {
@@ -44,6 +44,7 @@ const Home = () => {
   // Typewriter effect for current headline
   useEffect(() => {
     let i = 0;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeroText(''); // clear text before typing new one
     const textToType = headlines[quoteIndex];
     

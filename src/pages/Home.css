@@ -127,18 +127,6 @@
   position: relative;
 }
 
-.steps-container::before {
-  content: '';
-  position: absolute;
-  top: 80px;
-  left: 15%;
-  right: 15%;
-  height: 2px;
-  background: repeating-linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 8px, transparent 8px, transparent 16px);
-  opacity: 0.25;
-  z-index: 0;
-}
-
 .step-card {
   background-color: var(--color-surface);
   padding: 40px 24px;
@@ -394,10 +382,6 @@
   .steps-container {
     grid-template-columns: 1fr;
     gap: 24px;
-  }
-  
-  .steps-container::before {
-    display: none;
   }
   
   .step-card {

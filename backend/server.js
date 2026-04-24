@@ -63,7 +63,7 @@ const authMiddleware = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch {
     res.status(401).json({ msg: 'Token is not valid' });
   }
 };
@@ -81,11 +81,11 @@ app.get('/api/seed', async (req, res) => {
       const hashed = await bcrypt.hash('admin123', 10);
       await User.create({
         name: 'Admin',
-        email: 'admin@foodshare.com',
+        email: 'admin@feedforward.com',
         passwordHash: hashed,
         role: 'admin'
       });
-      return res.json({ msg: '✅ Admin created → Email: admin@foodshare.com | Password: admin123' });
+      return res.json({ msg: '✅ Admin created → Email: admin@feedforward.com | Password: admin123' });
     }
     res.json({ msg: 'Admin already exists' });
   } catch (err) {

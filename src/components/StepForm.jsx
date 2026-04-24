@@ -6,7 +6,6 @@ const StepForm = () => {
   const { token, user } = useContext(AuthContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [shake, setShake] = useState(false);
 
   const [formData, setFormData] = useState({
     foodName: '', category: '', quantity: '', unit: 'portions',
@@ -34,8 +33,7 @@ const StepForm = () => {
     !formData.contactNumber ||
     !formData.confirmed
   ) {
-    setShake(true);
-    setTimeout(() => setShake(false), 500);
+    // Return false to prevent submission if validation fails
     return false;
   }
   return true;

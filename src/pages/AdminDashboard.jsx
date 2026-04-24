@@ -1,28 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import './Dashboard.css';
 
 const AdminDashboard = () => {
-  const { user, token, logout } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [pendingDonations, setPendingDonations] = useState([]);
   const [pendingClaims, setPendingClaims] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // 🚫 block non-admin users
-    if (!user) return;
-    if (user.role !== 'admin') {
-      navigate('/login');
-      return;
-    }
-
-    // ✅ only fetch when token exists
-    if (token) {
-      fetchPending();
-    }
-  }, [user, token]);
 
   const fetchPending = async () => {
     try {
@@ -53,6 +40,22 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // 🚫 block non-admin users
+    if (!user) return;
+    if (user.role !== 'admin') {
+      navigate('/login');
+      return;
+    }
+
+    // ✅ only fetch when token exists
+    if (token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchPending();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, token, navigate]);
 
   const handleApproveDonation = async (id) => {
     try {
@@ -129,82 +132,72 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="page-container">
-      <h1>Admin Dashboard</h1>
+    <div className="dashboard-page">
+      <div className="dashboard-header">
+        <h1>Admin Dashboard</h1>
+      </div>
 
-      <button
-        onClick={logout}
-        className="btn btn-outline"
-        style={{ float: 'right' }}
-      >
-        Logout
-      </button>
+      <div className="dashboard-section">
+        <h2>Pending Donation Requests</h2>
 
-      {/* ================= DONATIONS ================= */}
-      <h2>Pending Donation Requests</h2>
+        {pendingDonations.length === 0 && <p>No pending donations</p>}
 
-      {pendingDonations.length === 0 && <p>No pending donations</p>}
-
-      {pendingDonations.map(d => (
-        <div key={d._id} style={cardStyle}>
-          <strong>{d.foodName}</strong> by {d.userId?.name} ({d.city})
-          <br />
-
-          <button
-            onClick={() => handleApproveDonation(d._id)}
-            className="btn btn-primary"
-            style={{ marginRight: '8px' }}
-          >
-            Approve
-          </button>
-
-          <button
-            onClick={() => handleRejectDonation(d._id)}
-            className="btn btn-outline"
-          >
-            Reject
-          </button>
+        <div className="listings-grid">
+          {pendingDonations.map(d => (
+            <div key={d._id} className="dashboard-card">
+              <h3>{d.foodName}</h3>
+              <p>by {d.userId?.name} ({d.city})</p>
+              <div style={{ marginTop: '16px' }}>
+                <button
+                  onClick={() => handleApproveDonation(d._id)}
+                  className="btn btn-primary"
+                  style={{ marginRight: '8px' }}
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleRejectDonation(d._id)}
+                  className="btn btn-outline"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
 
-      {/* ================= CLAIMS ================= */}
-      <h2 style={{ marginTop: '40px' }}>Pending Claim Requests</h2>
+      <div className="dashboard-section" style={{ marginTop: '40px' }}>
+        <h2>Pending Claim Requests</h2>
 
-      {pendingClaims.length === 0 && <p>No pending claims</p>}
+        {pendingClaims.length === 0 && <p>No pending claims</p>}
 
-      {pendingClaims.map(c => (
-        <div key={c._id} style={cardStyle}>
-          <strong>{c.donationId?.foodName}</strong>
-          <br />
-          Requested by: {c.userId?.name}
-
-          <br />
-
-          <button
-            onClick={() => handleApproveClaim(c._id)}
-            className="btn btn-primary"
-            style={{ marginRight: '8px' }}
-          >
-            Approve
-          </button>
-
-          <button
-            onClick={() => handleRejectClaim(c._id)}
-            className="btn btn-outline"
-          >
-            Reject
-          </button>
+        <div className="listings-grid">
+          {pendingClaims.map(c => (
+            <div key={c._id} className="dashboard-card">
+              <h3>{c.donationId?.foodName}</h3>
+              <p>Requested by: {c.userId?.name}</p>
+              <div style={{ marginTop: '16px' }}>
+                <button
+                  onClick={() => handleApproveClaim(c._id)}
+                  className="btn btn-primary"
+                  style={{ marginRight: '8px' }}
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => handleRejectClaim(c._id)}
+                  className="btn btn-outline"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
-};
-
-const cardStyle = {
-  border: '1px solid #ddd',
-  padding: '16px',
-  marginBottom: '16px',
-  borderRadius: '8px'
 };
 
 export default AdminDashboard;

@@ -11,7 +11,6 @@ const FindFood = () => {
   const [selectedFood, setSelectedFood] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { token, user } = useContext(AuthContext);
-  const [claimsMap, setClaimsMap] = useState({});
 
   const filters = ['All', 'Cooked Meal', 'Raw Vegetables', 'Packaged Food', 'Bakery'];
 
@@ -37,7 +36,6 @@ const FindFood = () => {
       userClaims.forEach(c => {
         map[c.donationId] = c.status;
       });
-      setClaimsMap(map);
 
       // 🔥 MERGE CLAIM STATUS INTO LISTINGS (this fixes refresh issue)
       const mapped = donationsData.map(d => {
@@ -111,8 +109,6 @@ const FindFood = () => {
       }
 
       // Update local state so UI updates instantly
-      setClaimsMap(prev => ({ ...prev, [selectedFood.id]: 'pending' }));
-
       setListings(prev =>
         prev.map(item =>
           item.id === selectedFood.id

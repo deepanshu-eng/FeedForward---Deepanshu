@@ -9,15 +9,6 @@ const UserDashboard = () => {
   const [myDonations, setMyDonations] = useState([]);
   const [myClaims, setMyClaims] = useState([]);
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchMyDonations();
-    fetchMyClaims();
-  }, [user, token, navigate]);
-
   const fetchMyDonations = async () => {
     try {
       const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/donations/my', {
@@ -25,7 +16,9 @@ const UserDashboard = () => {
       });
       const data = await res.json();
       if(Array.isArray(data)) setMyDonations(data);
-    } catch(e) {}
+    } catch(err) {
+      console.error(err);
+    }
   };
 
   const fetchMyClaims = async () => {
@@ -35,8 +28,21 @@ const UserDashboard = () => {
       });
       const data = await res.json();
       if(Array.isArray(data)) setMyClaims(data);
-    } catch(e) {}
+    } catch(err) {
+      console.error(err);
+    }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMyDonations();
+    fetchMyClaims();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, token, navigate]);
 
   const getStatusClass = (status) => {
     if(status === 'approved') return 'status-approved';

@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -12,7 +13,10 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     if (token && savedUser) {
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+      // Only set if different to avoid infinite loops, though useEffect only runs on token change
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUser(prev => JSON.stringify(prev) !== savedUser ? parsedUser : prev);
     }
   }, [token]);
 
