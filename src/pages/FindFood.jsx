@@ -18,13 +18,13 @@ const FindFood = () => {
   useEffect(() => {
     const fetchData = async () => {
       // Fetch approved donations
-      const donationsRes = await fetch('http://localhost:5000/api/donations?status=approved&isClaimed=false');
+      const donationsRes = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/donations?status=approved&isClaimed=false');
       const donationsData = await donationsRes.json();
 
       // Fetch user's claims
       let userClaims = [];
       if (token) {
-        const claimsRes = await fetch('http://localhost:5000/api/claims/my', {
+        const claimsRes = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/claims/my', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (claimsRes.ok) {
@@ -94,7 +94,7 @@ const FindFood = () => {
     if (!token || !selectedFood) return;
 
     try {
-      const res = await fetch('http://localhost:5000/api/claims', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/claims', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

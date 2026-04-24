@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
 
-      const res = await fetch('http://localhost:5000/api/admin/pending', {
+      const res = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/admin/pending', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
 
   const handleApproveDonation = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/admin/donations/${id}/approve`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/donations/${id}/approve`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
     if (!reason) return;
 
     try {
-      await fetch(`http://localhost:5000/api/admin/donations/${id}/reject`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/donations/${id}/reject`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const AdminDashboard = () => {
   // ✅ CLAIM HANDLERS (NEW)
   const handleApproveClaim = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/admin/claims/${id}/approve`, {
+      await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/claims/${id}/approve`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
   const reason = prompt('Rejection reason?');
 
   try {
-    const res = await fetch(`http://localhost:5000/api/admin/claims/${id}/reject`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/admin/claims/${id}/reject`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

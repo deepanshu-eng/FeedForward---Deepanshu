@@ -61,7 +61,7 @@ const Home = () => {
 
   // Fetch real approved donations
   useEffect(() => {
-    fetch('http://localhost:5000/api/donations?status=approved&isClaimed=false')
+    fetch((import.meta.env.VITE_API_URL || 'http://localhost:5000') + '/api/donations?status=approved&isClaimed=false')
       .then(res => res.json())
       .then(data => {
         const mapped = data.slice(0, 10).map(d => {
